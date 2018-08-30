@@ -1,6 +1,6 @@
 # (Node Express) Docker Kubernetes Playground
 
-Nothing usefull here. Just a playground!
+![Let's see what the computer says](https://i.gifer.com/95Us.gif)
 
 ## Docker
 ### Commands
@@ -73,6 +73,10 @@ Nothing usefull here. Just a playground!
   - Forward a port: `kubectl port-forward <pod-name> <local-port>:<app-pod-port>`
   - OR write a service spec file and run it: `kubectl create -f <service-spec>`
   - BUT when running on minikube, no `EXTERNAL-IP` will be available, solution: `minikube service <service-name>` will open the browser with the exposed service
+
+##### Rollouts
+  - Take a look at the last deplyments/roll-outs: `kubectl rollout history deployment <name>`
+  - Roll-back: `kubectl rollout undo deployment <name> --to-revision=<revision-number>`
 
 ##### Dealing with credentials / private docker images
   - Creating a docker-hub secret to access private images: `kubectl create secret docker-registry <name-for-secret> --docker-server=https://index.docker.io/v1/ --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>`
