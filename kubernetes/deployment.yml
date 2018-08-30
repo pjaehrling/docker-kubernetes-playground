@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nedkp-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nedkp
+  template:
+    metadata:
+      labels:
+        app: nedkp
+    spec:
+      containers:
+      - image: pjaehrling/node-express-docker-kubernetes-playground
+        name: nedkp
+        imagePullPolicy: Always # default is: IfNotPresent
+        ports:
+        - containerPort: 8080
+  strategy:
+    type: RollingUpdate # is the default, other option is 'Recreate'
+    rollingUpdate:
+      maxUnavailable: 1 # how many pods can be down during deployment
+      maxSurge: 1 # how many overhead can be created during deployment

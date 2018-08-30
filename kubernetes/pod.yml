@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nedkp
+  labels:
+    app: nedkp
+spec:
+  containers:
+  - image: pjaehrling/node-express-docker-kubernetes-playground
+    name: nedkp
+    ports:
+    - containerPort: 8080

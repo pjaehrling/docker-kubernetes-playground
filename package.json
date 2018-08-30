@@ -1,0 +1,13 @@
+{
+  "name": "nedkp",
+  "version": "0.0.1",
+  "description": "Node.js Express Docker Kubernetes Playground",
+  "author": "Philipp Jährling <philipp.jaehrling@gmail.com>",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
