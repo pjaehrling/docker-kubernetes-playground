@@ -18,6 +18,13 @@ spec:
         imagePullPolicy: Always # default is: IfNotPresent
         ports:
         - containerPort: 8080
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: 1
+          # requests:
+          #   memory: "100Mi"
+          #   cpu: 1
   strategy:
     type: RollingUpdate # is the default, other option is 'Recreate'
     rollingUpdate:

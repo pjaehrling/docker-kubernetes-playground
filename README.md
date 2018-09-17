@@ -23,6 +23,7 @@
 ## Kubernetes
 ### Infos
 - `Node`
+  - Also refered to as `Worker Nodes`
   - Physical/virtual server instance (e.g. AWS EC2 instance), which runs 0 - N `pods`
   - Receives commands / pod specs (.yml or .json files) and is monitored via the `Kubelet` (process running on every node)
 - `Pod`
@@ -31,6 +32,8 @@
   - Pods shouldn't be run without a `ReplicaSet` or `Deployment` (described later)
 - `Master node` aka `API Server`
   - The node to interact with the cluster (starting, stopping, monitoring the nodes/pods)
+- `Config Map`
+  - Used to configure Pods
 - `Service`
   - Defines a set of pods and how to access them (discovering & exposing of pods)
   - Acts as the entry point to a set of pods
@@ -42,10 +45,22 @@
 - `ReplicaSet`
   - Ensures that a specified number of pod replicas are running at any given time
   - It's recommanded to use `Deployments` to manage those
+- `Job`
+  - Creates one or more pods and ensures that a specified number of them successfully complete
+  - Well suited for tasks that need to run only once (complementary to `ReplicaSet`)
 - `Deployment`
   - Higher-level concept to manage `Pods` and `ReplicaSets`
   - Continuous delivery is not covered by default, instead the image (tag) has to be changed for every deploy [More Infos](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/)
-
+- `DaemonSet`
+  - Similar to Deployments (create Pods which are not expected to terminate)
+  - Use when it is important that a Pod always runs on certain hosts, and when it needs to start before other Pods
+  - Deployment for stateless services where it's not important which host the Pod runs on
+- `Namespace`
+  - Provides: unique naming scope, constraints for resource consumption, authentication
+  - When no namespace is set, the `default` namespace is used
+- `ResourceQuota`
+  - Can be assigned to namespaces, to restrict how much of cluster resources can be consumed across all resources in a namespace
+  
 ### SetUp
 - Running a kubernetes cluster on your local machine
   - [Minikube](https://github.com/kubernetes/minikube/releases)
@@ -65,9 +80,14 @@
 #### Kubectl
   - Run a container with a given name as/in a pod (deployment): `kubectl run <name> --image=<imagename> --labels="<labels>" --port=<port>`
   - Running a spec file: `kubectl apply/create -f <filename>.yaml`
+  - Get the logs of a running pod: `kubectl logs <pod-name>`
+  - Open a shell in your pod: `kubectl exec <name>delet -it /bin/bash`
   - Get a list of running pods/deployments/services/...: `kubectl get <pods/deployments/services/...>`
   - Get pods/deployments/services/... infos: `kubectl describe <pods/deployments/services/...> <name>`
   - Delete a pods/deployments/services/...: `kubectl delete <pods/deployments/services/...> <name>`
+  - Apply a ConfigMap to the nodes in the cluster: `kubectl apply -f <filename>.yaml`
+  - Merge two kubectl-config files: `KUBECONFIG=<path/file1>:<path/file2> kubectl config view --flatten > <outputfile>`
+  - List and switch between clusters/contexts: `kubectl config get-contexts`, `kubectl config current-context`, `kubectl config use-context`
 
 ##### Access pods/app
   - Forward a port: `kubectl port-forward <pod-name> <local-port>:<app-pod-port>`
