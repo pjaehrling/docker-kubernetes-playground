@@ -8,15 +8,26 @@ spec:
   containers:
   - image: pjaehrling/node-express-docker-kubernetes-playground
     name: nedkp
-    ports:
+    ports: # define the port the container should expose
     - containerPort: 8080
-    resources:
-      limits:
-        memory: "200Mi"
+    env: # load environment variables from configmap or secrets
+    - name: NODE_ENV
+      valueFrom:
+        configMapKeyRef:
+          name: nodeenv-config
+          key: NODE_ENV
+    - name: SECRET_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: username
+    resources: # set container resource limits / requirements
+      limits: # max
+        memory: 200Mi
         cpu: 2
-      # requests:
-      #   memory: "100Mi"
-      #   cpu: 1
+      requests: # min
+        memory: 100Mi
+        cpu: 1
       # -----------------------------------------
       # Kubernetes assignes Quality of Service classes to Pods
       # > Guaranteed: all containers in the pod have CPU & memory limits and no requests
@@ -25,3 +36,17 @@ spec:
       #
       # Get the QoS level: kubectl get name -o jsonpath={.status.qosClass}
       #
+    volumeMounts:
+    - name: secretVolume
+      mountPath: "/etc/secret"
+      readOnly: true
+    - name: emptyVolume
+      mountPath: "/etc/empty"
+      readOnly: false
+  volumes:
+  - name: secretVolume
+    secret:
+      secretName: mysecret # take a look at: secret.yml
+      # the secrets will be visible under /etc/secret/username and /etc/secret/password
+  - name: emptyVolume # could be used to store data
+    emptyDir: {}

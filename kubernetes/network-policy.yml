@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: my-secure-pods
+  policyTypes: # which policies should be used (incoming/outgoing)
+  - Ingress
+  - Egress
+  ingress: # define the policy rules for incoming traffic
+  - from:
+    - ipBlock: # by ip (blocks)
+        cidr: 172.17.0.0/16
+        except:
+        - 172.17.1.0/24
+    - namespaceSelector: # by namespaces
+        matchLabels:
+          project: my-other-project
+    - podSelector: # by pod labels
+        matchLabels:
+          app: my-frontend-pods
+    ports: # by ports
+    - protocol: TCP
+      port: 6379
+  egress: # define the policy rules for outgoing traffic
+  - to:
+    - ipBlock: # by ip (blocks)
+        cidr: 10.0.0.0/24
+    ports: # by ports
+    - protocol: TCP
+      port: 5978
