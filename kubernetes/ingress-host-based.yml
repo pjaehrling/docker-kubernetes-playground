@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-host-ingress
+spec:
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - backend:
+          serviceName: my-awesome-service-1
+          servicePort: 80
+  - host: bar.foo.com
+    http:
+      paths:
+      - backend:
+          serviceName: my-awesome-service-2
+          servicePort: 80
+
+# foo.bar.com --|          |-> foo.bar.com s1:80
+#               | some IP  |
+# bar.foo.com --|          |-> bar.foo.com s2:80

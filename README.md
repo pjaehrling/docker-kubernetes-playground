@@ -75,7 +75,14 @@
   - By default (without a policy) all incoming (ingress) and outgoing (egress) traffic from/to pods is allowed
   - Examples: [deny-everything](kubernetes/network-policy-deny.yml) and [other-options](kubernetes/network-policy.yml)
 - `Ingress`
-  - 
+  - Is a collection of rules that allow incoming connections to reach the cluster services (usually services and pods have cluster internal IPs)
+  - It can an be configured to give services public URLs, balance traffic, terminate SSL etc.
+  - Needs an `IngressController`:
+    - [List if possibilities](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers)
+    - On AWS, using the A(pplication)L(oad)B(alancers) to allow L7 (http) rules: [aws-alb-ingress-controller](https://github.com/kubernetes-sigs/aws-alb-ingress-controller)
+  - Possibility to expose a singel [service](kubernetes/ingress-single-service.yml), [path-based-routing](kubernetes/ingress-path-based.yml), [host-based-routing](kubernetes/ingress-host-based.yml)
+  - Enable TLS (termination) by providing a private key and a certificate (e.g. using a `Secret`) [more](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) 
+  - Other Kubernetes concepts like a `LoadBalancer` service, also allow to expose a single Service to the outside world
 - `Charts`
   - Collection of files that describe a set of Kubernetes resources (e.g. one pod like memcached or a whole app stack like wordpress etc.)
   - The files need to ne laid out in a particular directory tree and include files like a [Chart.yml](https://github.com/helm/helm/blob/master/docs/charts.md#the-chartyaml-file) or [requirements.yml](https://github.com/helm/helm/blob/master/docs/charts.md#managing-dependencies-with-requirementsyaml)

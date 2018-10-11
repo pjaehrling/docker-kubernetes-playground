@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  backend:
+    serviceName: my-awesome-service
+    servicePort: 80
+
+# This would provide a pulbic IP to reach "my-awesome-service"
+# To get the IP run: kubectl get ingress my-ingress

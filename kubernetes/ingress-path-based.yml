@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-path-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - path: /foo
+        backend:
+          serviceName: my-awesome-service-1
+          servicePort: 80
+      - path: /bar
+        backend:
+          serviceName: my-awesome-service-2
+          servicePort: 80
+
+# foo.bar.com -> some IP -> / foo    s1:80
+#                           / bar    s2:80
+ 
